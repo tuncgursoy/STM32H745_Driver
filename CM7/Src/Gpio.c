@@ -295,7 +295,7 @@ void Set_GPIO_OSPEEDR(GPIO_TypeDef* Port,short pin, short type)
  * 3: Very high speed
  * Note : If  type argument is entered wrong pin configuration is becomes Low Speed
  */
-short Set_GPIO_OSPEEDR(GPIO_TypeDef* Port,short pin)
+short Get_GPIO_OSPEEDR(GPIO_TypeDef* Port,short pin)
 {
 	bool bit_0, bit_1 ;
 	if ((Port->OSPEEDR & (1U<<(pin*2))))
@@ -406,7 +406,7 @@ void Set_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type)
  * 3: Reserved
  * Note : If  type argument is entered wrong pin configuration is becomes Low Speed
  */
-void Set_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type)
+void Get_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type)
 {
 	bool bit_0, bit_1 ;
 		if ((Port->PUPDR & (1U<<(pin*2))))

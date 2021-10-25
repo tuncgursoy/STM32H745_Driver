@@ -10,6 +10,17 @@
 #include <stdbool.h>
 #include "stm32h745xx.h"
 bool enanblePORT(GPIO_TypeDef* Port);
-bool GPIO_MODER(GPIO_TypeDef* Port,short Pin,bool bit_0, bool bit_1 );
-bool GPIO_BSRR(GPIO_TypeDef* Port,short pin, bool isItReset);
+void Set_GPIO_MODER(GPIO_TypeDef* Port,short Pin,short type);
+short Get_GPIO_MODER(GPIO_TypeDef* Port,short Pin);
+void Set_GPIO_OTYPER(GPIO_TypeDef* Port,short pin,bool bit);
+bool Get_GPIO_OTYPER(GPIO_TypeDef* Port,short pin);
+void Set_GPIO_OSPEEDR(GPIO_TypeDef* Port,short pin, short type);
+short Get_GPIO_OSPEEDR(GPIO_TypeDef* Port,short pin);
+void Set_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type);
+void Get_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type);
+bool Get_GPIO_IDR(GPIO_TypeDef* Port,short pin);
+void Set_GPIO_ODR(GPIO_TypeDef* Port,short pin,bool wantToON);
+bool Get_GPIO_ODR(GPIO_TypeDef* Port,short pin);
+void Set_GPIO_BSRR(GPIO_TypeDef* Port,short pin, bool isItReset);
+void Set_GPIO_AFR(GPIO_TypeDef* Port,short pin,short AFx);
 #endif /* GPIO_H_ */
