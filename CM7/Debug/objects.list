@@ -1,0 +1,7 @@
+"./Src/Control.o"
+"./Src/Gpio.o"
+"./Src/main.o"
+"./Src/syscalls.o"
+"./Src/sysmem.o"
+"./Src/user_led.o"
+"./Startup/startup_stm32h745zitx.o"

@@ -1,0 +1,3 @@
+Gpio.c:24:6:enanblePORT	16	static
+Gpio.c:77:6:GPIO_MODER	16	static
+Gpio.c:97:6:GPIO_BSRR	16	static
