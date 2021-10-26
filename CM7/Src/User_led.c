@@ -15,43 +15,43 @@
 void ld1_init(void)
 {
 	enanblePORT(GPIOB);
-	GPIO_MODER(GPIOB, 0, true,false);
+	Set_GPIO_MODER(GPIOB, 0,1);
 }
 void ld2_init(void)
 {
 	enanblePORT(GPIOE);
-	GPIO_MODER(GPIOE, 1, true,false);
+	Set_GPIO_MODER(GPIOE, 1, 1);
 }
 void ld3_init(void)
 {
 	enanblePORT(GPIOB);
-	GPIO_MODER(GPIOB, 14, true,false);
+	Set_GPIO_MODER(GPIOB, 14, 1);
 }
 void ld1_on(void)
 {
-	GPIO_BSRR(GPIOB, 0, false);
+	Set_GPIO_BSRR(GPIOB, 0, false);
 }
 void ld2_on(void)
 {
-	GPIO_BSRR(GPIOE, 1, false);
+	Set_GPIO_BSRR(GPIOE, 1, false);
 }
 
 void ld3_on(void)
 {
-	GPIO_BSRR(GPIOB, 14, false);
+	Set_GPIO_BSRR(GPIOB, 14, false);
 }
 void ld1_off(void)
 {
-	GPIO_BSRR(GPIOB, 0, true);
+	Set_GPIO_BSRR(GPIOB, 0, true);
 }
 void ld2_off(void)
 {
-	GPIO_BSRR(GPIOE, 1, true);
+	Set_GPIO_BSRR(GPIOE, 1, true);
 }
 
 void ld3_off(void)
 {
-	GPIO_BSRR(GPIOB, 14, true);
+	Set_GPIO_BSRR(GPIOB, 14, true);
 }
 
 

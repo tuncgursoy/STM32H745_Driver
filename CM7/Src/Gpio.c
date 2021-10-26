@@ -70,9 +70,7 @@ void enanblePORT(GPIO_TypeDef* Port)
 
 	}else
 	{
-		return false;
 	}
-	return true ;
 }
 /* Mode
  * Port:  GPIOA to GPIOK
@@ -139,7 +137,7 @@ void Set_GPIO_MODER(GPIO_TypeDef* Port,short Pin,short type)
  * 2: Alternate function mode
  * 3: Analog mode (reset state)
  * */
-short Get_GPIO_MODER(GPIO_TypeDef* Port,short Pin)
+short Get_GPIO_MODER(GPIO_TypeDef* Port,short pin)
 {
 	bool bit_0, bit_1 ;
 	if ((Port->OSPEEDR & (1U<<(pin*2))))
@@ -208,7 +206,7 @@ void Set_GPIO_OTYPER(GPIO_TypeDef* Port,short pin,bool bit)
  * */
 bool Get_GPIO_OTYPER(GPIO_TypeDef* Port,short pin)
 {
-	bool bit_0, bit_1 ;
+	bool bit_0 ;
 	if ((Port->OTYPER & (1U<<(pin))))
 		{
 			bit_0 = true ;
@@ -239,7 +237,7 @@ bool Get_GPIO_OTYPER(GPIO_TypeDef* Port,short pin)
  * 3: Very high speed
  * Note : If  type argument is entered wrong pin configuration is becomes Low Speed
  */
-void Set_GPIO_OSPEEDR(GPIO_TypeDef* Port,short pin, short type)
+void Set_GPIO_OSPEEDR(GPIO_TypeDef* Port,short Pin, short type)
 {
 	bool bit_0, bit_1 ;
 	switch(type)
@@ -353,7 +351,7 @@ short Get_GPIO_OSPEEDR(GPIO_TypeDef* Port,short pin)
  * 3: Reserved
  * Note : If  type argument is entered wrong pin configuration is becomes Low Speed
  */
-void Set_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type)
+void Set_GPIO_PUPDR(GPIO_TypeDef* Port,short Pin, short type)
 {
 	bool bit_0, bit_1 ;
 	switch(type)
@@ -406,7 +404,7 @@ void Set_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type)
  * 3: Reserved
  * Note : If  type argument is entered wrong pin configuration is becomes Low Speed
  */
-void Get_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type)
+short Get_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type)
 {
 	bool bit_0, bit_1 ;
 		if ((Port->PUPDR & (1U<<(pin*2))))
@@ -463,7 +461,7 @@ bool Get_GPIO_IDR(GPIO_TypeDef* Port,short pin)
  */
 void Set_GPIO_ODR(GPIO_TypeDef* Port,short pin,bool wantToON)
 {
-	if(isiton)
+	if(wantToON)
 	{
 		Port->ODR |= (1U<<pin);
 	}else

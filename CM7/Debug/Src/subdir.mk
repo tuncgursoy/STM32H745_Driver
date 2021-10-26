@@ -7,26 +7,26 @@
 C_SRCS += \
 ../Src/Control.c \
 ../Src/Gpio.c \
+../Src/User_led.c \
 ../Src/main.c \
 ../Src/syscalls.c \
-../Src/sysmem.c \
-../Src/user_led.c 
+../Src/sysmem.c 
 
 OBJS += \
 ./Src/Control.o \
 ./Src/Gpio.o \
+./Src/User_led.o \
 ./Src/main.o \
 ./Src/syscalls.o \
-./Src/sysmem.o \
-./Src/user_led.o 
+./Src/sysmem.o 
 
 C_DEPS += \
 ./Src/Control.d \
 ./Src/Gpio.d \
+./Src/User_led.d \
 ./Src/main.d \
 ./Src/syscalls.d \
-./Src/sysmem.d \
-./Src/user_led.d 
+./Src/sysmem.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

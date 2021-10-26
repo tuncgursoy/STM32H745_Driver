@@ -1,3 +1,14 @@
-Gpio.c:24:6:enanblePORT	16	static
-Gpio.c:77:6:GPIO_MODER	16	static
-Gpio.c:97:6:GPIO_BSRR	16	static
+Gpio.c:25:6:enanblePORT	16	static
+Gpio.c:86:6:Set_GPIO_MODER	24	static
+Gpio.c:140:7:Get_GPIO_MODER	24	static
+Gpio.c:187:6:Set_GPIO_OTYPER	16	static
+Gpio.c:207:6:Get_GPIO_OTYPER	24	static
+Gpio.c:240:6:Set_GPIO_OSPEEDR	24	static
+Gpio.c:296:7:Get_GPIO_OSPEEDR	24	static
+Gpio.c:354:6:Set_GPIO_PUPDR	24	static
+Gpio.c:407:7:Get_GPIO_PUPDR	24	static
+Gpio.c:452:6:Get_GPIO_IDR	16	static
+Gpio.c:462:6:Set_GPIO_ODR	16	static
+Gpio.c:479:6:Get_GPIO_ODR	16	static
+Gpio.c:495:6:Set_GPIO_BSRR	16	static
+Gpio.c:530:6:Set_GPIO_AFR	24	static
