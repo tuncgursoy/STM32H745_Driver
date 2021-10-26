@@ -1,5 +1,6 @@
 #define CORE_CM7
 #include "User_led.h"
+#include "Systick.h"
 #include "stm32h745xx.h"
 
 int main(void)
@@ -11,13 +12,13 @@ int main(void)
 	while(1)
 	{
 		ld1_on();
-		for(int i = 0 ; i<200000; i++);
+		systickDelayMs(100);
 		ld1_off();
 		ld2_on();
-		for(int i = 0 ; i<200000; i++);
+		systickDelayMs(100);
 		ld2_off();
 		ld3_on();
-		for(int i = 0 ; i<200000; i++);
+		systickDelayMs(100);
 		ld3_off();
 
 	}

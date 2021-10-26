@@ -1,5 +1,6 @@
 "./Src/Control.o"
 "./Src/Gpio.o"
+"./Src/Systick.o"
 "./Src/User_led.o"
 "./Src/main.o"
 "./Src/syscalls.o"
