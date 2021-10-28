@@ -1,4 +1,4 @@
-Gpio.c:25:6:enanblePORT	16	static
+Gpio.c:25:6:enablePORT	16	static
 Gpio.c:86:6:Set_GPIO_MODER	24	static
 Gpio.c:140:7:Get_GPIO_MODER	24	static
 Gpio.c:187:6:Set_GPIO_OTYPER	16	static

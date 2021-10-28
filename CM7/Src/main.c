@@ -2,9 +2,10 @@
 #include "User_led.h"
 #include "Systick.h"
 #include "stm32h745xx.h"
-
+#include "Clock.h"
 int main(void)
 {
+	SysClockConfig();
 	ld1_init();
 	ld2_init();
 	ld3_init();

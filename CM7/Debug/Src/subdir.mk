@@ -5,27 +5,33 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/Clock.c \
 ../Src/Control.c \
 ../Src/Gpio.c \
 ../Src/Systick.c \
+../Src/Uart.c \
 ../Src/User_led.c \
 ../Src/main.c \
 ../Src/syscalls.c \
 ../Src/sysmem.c 
 
 OBJS += \
+./Src/Clock.o \
 ./Src/Control.o \
 ./Src/Gpio.o \
 ./Src/Systick.o \
+./Src/Uart.o \
 ./Src/User_led.o \
 ./Src/main.o \
 ./Src/syscalls.o \
 ./Src/sysmem.o 
 
 C_DEPS += \
+./Src/Clock.d \
 ./Src/Control.d \
 ./Src/Gpio.d \
 ./Src/Systick.d \
+./Src/Uart.d \
 ./Src/User_led.d \
 ./Src/main.d \
 ./Src/syscalls.d \

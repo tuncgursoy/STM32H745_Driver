@@ -8,7 +8,7 @@
 #define GPIO_H_
 #include <stdbool.h>
 #include "stm32h745xx.h"
-void enanblePORT(GPIO_TypeDef* Port);
+void enablePORT(GPIO_TypeDef* Port);
 void Set_GPIO_MODER(GPIO_TypeDef* Port,short Pin,short type);
 short Get_GPIO_MODER(GPIO_TypeDef* Port,short pin);
 void Set_GPIO_OTYPER(GPIO_TypeDef* Port,short pin,bool bit);

@@ -22,7 +22,7 @@
 #define GPIOKEN (1U<<10)
 
 
-void enanblePORT(GPIO_TypeDef* Port)
+void enablePORT(GPIO_TypeDef* Port)
 {
 	if (Port==GPIOA) {
 		RCC->AHB4ENR |= GPIOAEN;

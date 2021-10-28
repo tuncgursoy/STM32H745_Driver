@@ -14,17 +14,17 @@
 
 void ld1_init(void)
 {
-	enanblePORT(GPIOB);
+	enablePORT(GPIOB);
 	Set_GPIO_MODER(GPIOB, 0,1);
 }
 void ld2_init(void)
 {
-	enanblePORT(GPIOE);
+	enablePORT(GPIOE);
 	Set_GPIO_MODER(GPIOE, 1, 1);
 }
 void ld3_init(void)
 {
-	enanblePORT(GPIOB);
+	enablePORT(GPIOB);
 	Set_GPIO_MODER(GPIOB, 14, 1);
 }
 void ld1_on(void)
