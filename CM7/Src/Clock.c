@@ -191,12 +191,29 @@ void  SystemClockStatus(short CFGR)
 
 		}
 		if(bit_1==0){
-	    while (!(((((RCC->CFGR & (1U<<0))==bit_0) && ((RCC->CFGR & (1U<<1))==bit_1)))));
+			if(bit_0==0)
+			{
+			    while (!(((((RCC->CFGR & (1U<<3))==bit_0) && ((RCC->CFGR & (1U<<4))==bit_1)))));
+
+			}else
+			{
+			    while (!(((((RCC->CFGR & (1U<<3))==(1U<<3)) && ((RCC->CFGR & (1U<<4))==bit_1)))));
+
+			}
 		}else
 		{
-		    while (!(((((RCC->CFGR & (1U<<0))==bit_0) && ((RCC->CFGR & (1U<<1))==(1U<<1))))));
+			if(bit_0==0)
+						{
+						    while (!(((((RCC->CFGR & (1U<<3))==bit_0) && ((RCC->CFGR & (1U<<4))==(1U<<4))))));
+
+						}else
+						{
+						    while (!(((((RCC->CFGR & (1U<<3))==(1U<<3)) && ((RCC->CFGR & (1U<<4))==(1U<<4))))));
+
+						}
 		}
-		}
+
+}
 
 
 
