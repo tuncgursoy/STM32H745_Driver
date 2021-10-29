@@ -133,6 +133,73 @@ void DIVM2(short prescaler)
  * ...
  * 63: division by 63
  */
+
+
+/*
+ * System clock switch status
+ * Set and reset by hardware to indicate which clock source is used as system clock.
+ * 0: HSI used as system clock (hsi_ck) (default after reset)
+ * 1: CSI used as system clock (csi_ck)
+ * 2: HSE used as system clock (hse_ck)
+ * 3: PLL1 used as system clock (pll1_p_ck)
+ * others: Reserved
+ */
+void  SystemClockStatus(short CFGR)
+{
+	RCC->CFGR &= ~(1U<<2);
+	bool bit_0, bit_1;
+	switch(CFGR)
+	{
+	case 0:
+		bit_0 = 0;
+		bit_1 = 0;
+		break;
+	case 1:
+		bit_0 = 1;
+		bit_1 = 0;
+		break;
+	case 2:
+		bit_0 = 0;
+		bit_1 = 1;
+			break;
+	case 3:
+		bit_0 = 1;
+		bit_1 = 1;
+			break;
+	default:
+		bit_0 = 0;
+		bit_1 = 0;
+			break;
+
+	}
+
+
+	if(bit_0)
+	{
+		RCC-> CFGR |= (1U<<0);
+	}else
+	{
+		RCC-> CFGR &= ~(1U<<0);
+
+	}
+	if(bit_1)
+		{
+			RCC-> CFGR |= (1U<<1);
+		}else
+		{
+			RCC-> CFGR &= ~(1U<<1);
+
+		}
+		if(bit_1==0){
+	    while (!(((((RCC->CFGR & (1U<<0))==bit_0) && ((RCC->CFGR & (1U<<1))==bit_1)))));
+		}else
+		{
+		    while (!(((((RCC->CFGR & (1U<<0))==bit_0) && ((RCC->CFGR & (1U<<1))==(1U<<1))))));
+		}
+		}
+
+
+
 void DIVM3(short prescaler)
 {
 	long temp = decimalToBinary(prescaler);
@@ -526,10 +593,10 @@ void System_Clock_MUX(short SW)
 		while(!(((RCC->CFGR & (1U<<0))==1)&&((RCC->CFGR & (1U<<1))==0)));
 		break;
 	case 2 :
-		while(!(((RCC->CFGR & (1U<<0))==0)&&((RCC->CFGR & (1U<<1))==1)));
+		while(!(((RCC->CFGR & (1U<<0))==0)&&((RCC->CFGR & (1U<<1))==(1U<<1))));
 		break;
 	case 3 :
-		while(!(((RCC->CFGR & (1U<<0))==1)&&((RCC->CFGR & (1U<<1))==1)));
+		while(!(((RCC->CFGR & (1U<<0))==1)&&((RCC->CFGR & (1U<<1))==(1U<<1))));
 		break;
 	default :
 		while(!(((RCC->CFGR & (1U<<0))==0)&&((RCC->CFGR & (1U<<1))==0)));
@@ -760,13 +827,7 @@ void SysClockConfig(void)
 	StartPLL1();
 	D1CFGR_HPRE(1);
 	D1CFGR_D1CPRE(0);
-	//*****
-	  RCC-> CFGR &= ~(1U<<2); //0
-	    RCC-> CFGR |= (1U<<1); //one
-	    RCC-> CFGR |= (1U<<0); //one
-
-	    while (!(RCC-> CFGR & (1U<<0)));
-	    //*********
+	SystemClockStatus(3);
 	D1PPRE(1);
 	D2PPRE1(1);
 	D2PPRE1(1);
