@@ -8,11 +8,12 @@
 
 #include "stm32h745xx.h"
 #include "Systick.h"
+#include "Clock.h"
 
 #define CTRL_ENABLE		 (1U<<0)
 #define CTRL_CLKSRC		 (1U<<2)
 #define CTRL_COUNTFLAG	 (1U<<16)
-#define SYSTICK_LOAD_VAL (get_SYSCLK()/1000)
+#define SYSTICK_LOAD_VAL (get_CPU1_Systick_Clock()/1000)
 //#define SYSTICK_LOAD_VAL (64000000/1000)
 void systickDelayMs(int delay)
 {

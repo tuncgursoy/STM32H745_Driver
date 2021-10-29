@@ -7,6 +7,23 @@
 #define CORE_CM7
 #include "stm32h745xx.h"
 #include <stdbool.h>
+#include <math.h>
+
+
+#define DIVM1_SC 1
+#define DIVN1_SC 120
+#define DIVP1_SC 1
+#define DIVQ1_SC 1
+#define DIVR1_SC 1
+#define D1CPRE_SC 0
+#define HPRE_SC 1
+#define D1PPR_SC 1
+#define D2PPRE1_SC 1
+#define D2PPRE2_SC 1
+#define D3PPRE_SC 1
+
+
+
 
 #define HSEON	(1U<<16) // HSE clock enable
 #define HSERDY	(1U<<17) // HSE clock ready flag
@@ -835,8 +852,8 @@ void SysClockConfig(void)
 	//PLLSRC Source Mux
 	PLLSRC_Select(2);
 	//DIVM1 PPL1
-	DIVM1(1);
-	PLL1DIVR(120, 1, 1, 1);
+	DIVM1(DIVM1_SC);
+	PLL1DIVR(DIVN1_SC, DIVP1_SC, DIVQ1_SC, DIVR1_SC);
 	input_frequency_range(2);
 	PLL1VCOSEL(0);
 	enable_PLL1_OutputDividers();
@@ -852,5 +869,97 @@ void SysClockConfig(void)
 }
 unsigned long  get_SYSCLK()
 {
-	return 8000000*120/2;
+	unsigned long SysClock =  8000000;
+	SysClock /= DIVM1_SC ;
+	SysClock *= DIVN1_SC ;
+	SysClock /= (DIVP1_SC+1) ;
+	return SysClock;
 }
+unsigned long SysClockAfter_D1Prescaler(void)
+{
+	unsigned long SysClock = get_SYSCLK();
+	SysClock /= pow(2,D1CPRE_SC);
+	return SysClock;
+}
+unsigned long  get_CPU1_Clock()
+{
+	unsigned long SysClock =  SysClockAfter_D1Prescaler();
+	return SysClock;
+}
+unsigned long  get_CPU1_Systick_Clock()
+{
+	unsigned long SysClock =  get_SYSCLK();
+	return SysClock;
+}
+unsigned long get_SysClock_AfterHPRE_Prescaler(void)
+{
+	unsigned long SysClock = SysClockAfter_D1Prescaler();
+	SysClock /= pow(2,HPRE_SC);
+	return SysClock;
+}
+unsigned long  get_CPU2_Clock()
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+	return SysClock;
+}
+unsigned long  get_CPU2_Systick_Clock()
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+	return SysClock;
+}
+unsigned long get_AXI_Preipheral_Clock()
+{
+	return get_SysClock_AfterHPRE_Prescaler();
+}
+unsigned long get_HCLK3_Preipheral_Clock()
+{
+	return get_SysClock_AfterHPRE_Prescaler();
+}
+unsigned long get_APB3_Preipheral_Clock()
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+	SysClock /= POW(2,D1PPR_SC);
+	return SysClock;
+}
+unsigned long get_AHB1_2_Preipheral_Clock()
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+	return SysClock;
+}
+unsigned long get_APB1_Preipheral_Clock()
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+	SysClock /= POW(2,D2PPRE1_SC);
+	return SysClock;
+}
+unsigned long get_APB1_Timer_Clock()
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+	SysClock /= POW(2,D2PPRE1_SC);
+	SysClock *= 2;
+	return SysClock;
+}
+unsigned long get_APB2_Preipheral_Clock()
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+	SysClock /= POW(2,D2PPRE2_SC);
+	return SysClock;
+}
+unsigned long get_APB2_Timer_Clock()
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+	SysClock /= POW(2,D2PPRE2_SC);
+	SysClock *= 2;
+	return SysClock;
+}
+unsigned long get_APB4_Preiphreal(void)
+{
+	return get_SysClock_AfterHPRE_Prescaler();
+}
+
+unsigned long get_APB4_Preiphreal_Clock(void)
+{
+	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
+		SysClock /= POW(2,D3PPRE_SC);
+		return SysClock;}
+

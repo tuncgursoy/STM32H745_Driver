@@ -9,6 +9,7 @@
 #include "Uart.h"
 #include <stdbool.h>
 #include "Gpio.h"
+#include "Clock.h"
 
 #define public
 #define private static
@@ -26,6 +27,14 @@
 #define ENUE		(1U<<0) // UART Enable bit
 #define ENRE		(1U<<2) // Receiver enable
 #define ENTE		(1U<<3)	// Transmitter enable
+
+
+#define ISR_TXE (1U<<7)
+#define ISR_RXNE (1U<<5)
+
+#define Sys_FREQ  get_SYSCLK()
+#define APB1_CLK Sys_FREQ
+#define UART_BaudRate 9600
 
 private void enable_USART1(void)
 {
