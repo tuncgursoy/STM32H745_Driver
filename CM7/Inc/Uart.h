@@ -18,5 +18,6 @@ void enable_UART5_Different_PortPins(GPIO_TypeDef* GPIOx_TX,GPIO_TypeDef* GPIOx_
 void enable_UART6(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
 void enable_UART7(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
 void enable_UART8(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-
+char uart_read(USART_TypeDef* USART);
+void uart_write(USART_TypeDef* USART,int ch);
 #endif /* UART_H_ */

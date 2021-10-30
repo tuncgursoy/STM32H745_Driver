@@ -7,7 +7,7 @@
 #define CORE_CM7
 #include "stm32h745xx.h"
 #include <stdbool.h>
-#include <math.h>
+#include <stdio.h>
 
 
 #define DIVM1_SC 1
@@ -43,6 +43,15 @@ long decimalToBinary(int decimalnum)
     return binarynum;
 }
 
+double pow(double x , double y)
+{
+	double s = 1 ;
+	for(int i = 0 ; i<y;i++)
+	{
+		s *= x;
+	}
+	return s ;
+}
 
 /*
  * Set and reset by software to select the PLL clock source.
@@ -878,7 +887,9 @@ unsigned long  get_SYSCLK()
 unsigned long SysClockAfter_D1Prescaler(void)
 {
 	unsigned long SysClock = get_SYSCLK();
-	SysClock /= pow(2,D1CPRE_SC);
+	unsigned long s = (unsigned long)pow((double)2,(double)D1CPRE_SC);
+	unsigned long x = SysClock/s;
+	SysClock =x ;
 	return SysClock;
 }
 unsigned long  get_CPU1_Clock()
@@ -894,7 +905,9 @@ unsigned long  get_CPU1_Systick_Clock()
 unsigned long get_SysClock_AfterHPRE_Prescaler(void)
 {
 	unsigned long SysClock = SysClockAfter_D1Prescaler();
-	SysClock /= pow(2,HPRE_SC);
+	unsigned long s = (unsigned long)pow((double)2,(double)HPRE_SC);
+		unsigned long x = SysClock/s;
+		SysClock =x ;
 	return SysClock;
 }
 unsigned long  get_CPU2_Clock()
@@ -918,8 +931,9 @@ unsigned long get_HCLK3_Preipheral_Clock()
 unsigned long get_APB3_Preipheral_Clock()
 {
 	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
-	SysClock /= POW(2,D1PPR_SC);
-	return SysClock;
+	unsigned long s = (unsigned long)pow((double)2,(double)D1PPR_SC);
+		unsigned long x = SysClock/s;
+		SysClock =x ;	return SysClock;
 }
 unsigned long get_AHB1_2_Preipheral_Clock()
 {
@@ -929,26 +943,29 @@ unsigned long get_AHB1_2_Preipheral_Clock()
 unsigned long get_APB1_Preipheral_Clock()
 {
 	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
-	SysClock /= POW(2,D2PPRE1_SC);
-	return SysClock;
+	unsigned long s = (unsigned long)pow((double)2,(double)D2PPRE1_SC);
+		unsigned long x = SysClock/s;
+		SysClock =x ;	return SysClock;
 }
 unsigned long get_APB1_Timer_Clock()
 {
 	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
-	SysClock /= POW(2,D2PPRE1_SC);
+	unsigned long s = (unsigned long)pow((double)2,(double)D2PPRE2_SC);
+			unsigned long x = SysClock/s;
+			SysClock =x ;
 	SysClock *= 2;
 	return SysClock;
 }
 unsigned long get_APB2_Preipheral_Clock()
 {
 	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
-	SysClock /= POW(2,D2PPRE2_SC);
-	return SysClock;
+	unsigned long s = (unsigned long)pow((double)2,(double)D2PPRE2_SC);
+		unsigned long x = SysClock/s;
+		SysClock =x ;	return SysClock;
 }
 unsigned long get_APB2_Timer_Clock()
 {
 	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
-	SysClock /= POW(2,D2PPRE2_SC);
 	SysClock *= 2;
 	return SysClock;
 }
@@ -960,6 +977,7 @@ unsigned long get_APB4_Preiphreal(void)
 unsigned long get_APB4_Preiphreal_Clock(void)
 {
 	unsigned long SysClock =  get_SysClock_AfterHPRE_Prescaler();
-		SysClock /= POW(2,D3PPRE_SC);
-		return SysClock;}
+	unsigned long s = (unsigned long)pow((double)2,(double)D3PPRE_SC);
+		unsigned long x = SysClock/s;
+		SysClock =x ;		return SysClock;}
 

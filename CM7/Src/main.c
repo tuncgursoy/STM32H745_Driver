@@ -3,25 +3,17 @@
 #include "Systick.h"
 #include "stm32h745xx.h"
 #include "Clock.h"
+#include "Uart.h"
+uint8_t s ;
 int main(void)
 {
 	SysClockConfig();
-	ld1_init();
-	ld2_init();
-	ld3_init();
-
+	enable_UART3(GPIOD, 8, 9, 7);
+	uint8_t s =' ';
 	while(1)
 	{
-		ld1_on();
-		systickDelayMs(100);
-		ld1_off();
-		ld2_on();
-		systickDelayMs(100);
-		ld2_off();
-		ld3_on();
-		systickDelayMs(100);
-		ld3_off();
-
+		s = uart_read(USART3);
+		systickDelayMs(10);
 	}
 	return 0 ;
 }

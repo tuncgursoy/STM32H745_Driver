@@ -32,9 +32,45 @@
 #define ISR_TXE (1U<<7)
 #define ISR_RXNE (1U<<5)
 
-#define Sys_FREQ  get_SYSCLK()
-#define APB1_CLK Sys_FREQ
-#define UART_BaudRate 9600
+#define APB1_CLK get_APB1_Preipheral_Clock();
+#define APB2_CLK get_APB2_Preipheral_Clock();
+#define UART_BaudRate 4800
+
+static void uart_set_baudrate(USART_TypeDef *USARTx,uint32_t PerihCLK,uint32_t BaudRate);
+static uint16_t compute_uart_bd(uint32_t PerihCLK,uint32_t BaudRate);
+
+unsigned long get_PerihCLK(USART_TypeDef *USARTx)
+{
+	if(USART1==USARTx || USART6 == USARTx)
+	{
+		return APB2_CLK;
+	}else
+	{
+		return APB1_CLK;
+	}
+}
+
+private void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bool isit_FIFO)
+{
+	if(isit_FIFO)
+	{
+		USARTx->CR1 |= (1U<<29);
+		if(!isitoversamplingby16)
+		{
+			USARTx->CR1 |= (1U<<15);
+		}
+	}else
+	{
+		USARTx->CR1 &= ~(1U<<29);
+		if(isitoversamplingby16)
+		{
+			USARTx->CR1 |= (1U<<15);
+		}
+	}
+
+
+}
+
 
 private void enable_USART1(void)
 {
@@ -119,10 +155,13 @@ private void enable_UART(GPIO_TypeDef* GPIOx,USART_TypeDef* USART,short TxPin,sh
 	{
 		selectedUART(USART);
 		enablePORT(GPIOx);
-		Set_GPIO_MODER(GPIOB, TxPin, 2);//TX
-		Set_GPIO_MODER(GPIOB, RxPin, 2); //RX
-		Set_GPIO_AFR(GPIOB, TxPin, AFx);
-		Set_GPIO_AFR(GPIOB, RxPin, AFx);
+		Set_GPIO_MODER(GPIOx, TxPin, 2);//TX
+		Set_GPIO_MODER(GPIOx, RxPin, 2); //RX
+		Set_GPIO_AFR(GPIOx, TxPin, AFx);
+		Set_GPIO_AFR(GPIOx, RxPin, AFx);
+		sampling_mode_and_FIFO(USART,false,false);
+		uart_set_baudrate(USART,get_PerihCLK(USART),UART_BaudRate);
+
 	}else
 	{
 		//That UART is already defined
@@ -141,6 +180,9 @@ private void enable_UART_differentPins(GPIO_TypeDef* GPIOx_TX,GPIO_TypeDef* GPIO
 		Set_GPIO_MODER(GPIOx_RX, RxPin, 2); //RX
 		Set_GPIO_AFR(GPIOx_TX, TxPin, AFx_TX);
 		Set_GPIO_AFR(GPIOx_RX, RxPin, AFx_RX);
+		sampling_mode_and_FIFO(USART,false,false);
+		uart_set_baudrate(USART,get_PerihCLK(USART),UART_BaudRate);
+
 	}else
 	{
 		//That UART is already defined
@@ -215,7 +257,7 @@ public void enable_UART5(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx)
  */
 public void enable_UART5_Different_Pins(GPIO_TypeDef* GPIOx_TX,GPIO_TypeDef* GPIOx_RX,short TxPin,short RxPin,short AFx_TX,short AFx_RX)
 {
-	enable_UART_differentPins(GPIOx_TX, GPIOx_RX, TxPin,TxPin, RxPin, AFx_TX, AFx_RX);
+	enable_UART_differentPins(GPIOx_TX, GPIOx_RX, UART5,TxPin, RxPin, AFx_TX, AFx_RX);
 }
 
 /*
@@ -248,4 +290,45 @@ public void enable_UART7(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx)
 public void enable_UART8(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx)
 {
 	enable_UART(GPIOx,UART8,TxPin, RxPin, AFx);
+}
+
+
+char uart_read(USART_TypeDef* USART)
+{
+	/*Make sure the receive data register is not empty*/
+	while(!(USART->ISR & ISR_RXNE));
+	return (int)USART->RDR;
+
+}
+void uart_write(USART_TypeDef* USART,int ch)
+{
+	/*Make Sure the transmit data register is empty*/
+	//Write to transmit data register
+	while(!(USART->ISR & ISR_TXE));
+	USART->TDR = (ch & 0xFF);
+
+
+}
+
+static void uart_set_baudrate(USART_TypeDef *USARTx,uint32_t PerihCLK,uint32_t BaudRate)
+		{
+
+	if(((USARTx->CR1 & (1U<<15)) && !(USARTx->CR1 & (1U<<29)))||(!(USARTx->CR1 & (1U<<15)) && (USARTx->CR1 & (1U<<29))))
+	{
+		USARTx->BRR = compute_uart_bd(PerihCLK,BaudRate)*2;
+
+	}else
+	{
+		USARTx->BRR = (compute_uart_bd(PerihCLK,BaudRate));
+
+	}
+
+
+
+		}
+static uint16_t compute_uart_bd(uint32_t PerihCLK,uint32_t BaudRate)
+{
+
+		return ((PerihCLK + (BaudRate/2U))/BaudRate);
+
 }
