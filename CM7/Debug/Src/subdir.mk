@@ -9,7 +9,7 @@ C_SRCS += \
 ../Src/Control.c \
 ../Src/Gpio.c \
 ../Src/Systick.c \
-../Src/Uart.c \
+../Src/Uart_new.c \
 ../Src/User_led.c \
 ../Src/main.c \
 ../Src/syscalls.c \
@@ -20,7 +20,7 @@ OBJS += \
 ./Src/Control.o \
 ./Src/Gpio.o \
 ./Src/Systick.o \
-./Src/Uart.o \
+./Src/Uart_new.o \
 ./Src/User_led.o \
 ./Src/main.o \
 ./Src/syscalls.o \
@@ -31,7 +31,7 @@ C_DEPS += \
 ./Src/Control.d \
 ./Src/Gpio.d \
 ./Src/Systick.d \
-./Src/Uart.d \
+./Src/Uart_new.d \
 ./Src/User_led.d \
 ./Src/main.d \
 ./Src/syscalls.d \

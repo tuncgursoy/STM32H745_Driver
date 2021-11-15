@@ -2,7 +2,7 @@
 "./Src/Control.o"
 "./Src/Gpio.o"
 "./Src/Systick.o"
-"./Src/Uart.o"
+"./Src/Uart_new.o"
 "./Src/User_led.o"
 "./Src/main.o"
 "./Src/syscalls.o"

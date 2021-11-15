@@ -451,7 +451,7 @@ short Get_GPIO_PUPDR(GPIO_TypeDef* Port,short pin, short type)
  * */
 bool Get_GPIO_IDR(GPIO_TypeDef* Port,short pin)
 {
-	return (Port->IDR & pin);
+	return (Port->IDR & (1U<<pin));
 }
 
 /*

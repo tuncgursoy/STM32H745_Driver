@@ -8,16 +8,13 @@
 #ifndef UART_H_
 #define UART_H_
 
+#define RXNEIE		(1U<<5)	// Rx Interrupt
+#define ISR_RXNE (1U<<5)
 
-void enable_UART1(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-void enable_UART2(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-void enable_UART3(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-void enable_UART4(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-void enable_UART5(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-void enable_UART5_Different_PortPins(GPIO_TypeDef* GPIOx_TX,GPIO_TypeDef* GPIOx_RX,short TxPin,short RxPin,short AFx_TX,short AFx_RX);
-void enable_UART6(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-void enable_UART7(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-void enable_UART8(GPIO_TypeDef* GPIOx,short TxPin,short RxPin,short AFx);
-char uart_read(USART_TypeDef* USART);
-void uart_write(USART_TypeDef* USART,int ch);
+void Uart_init(GPIO_TypeDef* GPIOx,USART_TypeDef *USARTx,short TxPin, short Rxpin, short Afx,unsigned long BaudRate,unsigned long size_of_buffer);
+void uart_send_bit(USART_TypeDef* USART,int ch);
+void uart_send_string(USART_TypeDef* USART, char* string, int size);
+char* uart_get_buffer(USART_TypeDef* USART);
+char uart_get_buffer_BYTE(USART_TypeDef* USART);
+void UART3_rx_interrupt(USART_TypeDef* USART);
 #endif /* UART_H_ */
