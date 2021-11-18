@@ -90,17 +90,20 @@ static void uart_set_baudrate(USART_TypeDef *USARTx,uint32_t PerihCLK,uint32_t B
 static uint16_t compute_uart_bd(uint32_t PerihCLK,uint32_t BaudRate);
 void uart_send_bit(USART_TypeDef* USART,int ch);
 void uart_send_string(USART_TypeDef* USART, char* string, int size);
-char* uart_get_buffer(USART_TypeDef* USART);
+char* uart_get_buffer(USART_TypeDef* USART,unsigned long *Size);
 char uart_get_buffer_BYTE(USART_TypeDef* USART);
 void init_Buffer(USART_TypeDef* USART,unsigned long size);
-void UART3_rx_interrupt(USART_TypeDef* USART);
+void UART1_rx_interrupt(USART_TypeDef* USART);
 uint8_t* get_Buffer(USART_TypeDef* USARTx);
 unsigned long get_current_loc_Buffer (USART_TypeDef *USARTx);
+void disable_UART(USART_TypeDef* USARTx);
 
 void increase_Buffer(USART_TypeDef* USARTx);
 void decrease_Buffer(USART_TypeDef* USARTx);
 
 void error(char* ErrorName);
+void clear_Buffer(uint8_t* Buffer, unsigned long size);
+
 
 
 
@@ -158,7 +161,8 @@ void Uart_init(GPIO_TypeDef* GPIOx,USART_TypeDef *USARTx,short TxPin, short Rxpi
 	 		Set_GPIO_MODER(GPIOx, Rxpin, 2); //RX
 	 		Set_GPIO_AFR(GPIOx, TxPin, Afx);
 	 		Set_GPIO_AFR(GPIOx, Rxpin, Afx);
-	 		USARTx->CR1 |= RXNEIE ;
+	 		USARTx->CR1 |= RXNEIE;
+	 		USARTx->CR3 |= (1U<<12); //disable ORE error
 	 		set_baudRate(USARTx, BaudRate);
 	 		sampling_mode_and_FIFO(USARTx,false,false);
 	 		init_Buffer(USARTx, size_of_buffer);
@@ -351,21 +355,24 @@ void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bo
 	 }
  }
 
- char* uart_get_buffer(USART_TypeDef* USART)
+ char* uart_get_buffer(USART_TypeDef* USART,unsigned long *Size)
  {
 	 char* temp = malloc(sizeof(char)*get_current_loc_Buffer(USART));
-	 unsigned long temp_loc = 0 ;
+	 unsigned long temp_loc = get_current_loc_Buffer(USART);
+	 *Size = get_current_loc_Buffer(USART) ;
 	 while(get_current_loc_Buffer(USART)!=0)
 	 {
 	 	char temp_uart_buffer_byte = uart_get_buffer_BYTE(USART);
 	 	if(temp_uart_buffer_byte!=255)
 	 	{
-			temp[temp_loc] =temp_uart_buffer_byte;
+			temp[temp_loc-1] =temp_uart_buffer_byte;
+			temp_loc--;
 	 	}else
 	 	{
 	 		break ;
 	 	}
 	 }
+
 	 return temp ;
  }
 
@@ -375,8 +382,8 @@ void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bo
 	 if(loc !=0)
 	 {
 		 uint8_t* temp =  get_Buffer(USART);
-		 char temp_char = temp[loc];
-		 temp[loc] = '\000';
+		 char temp_char = temp[loc-1];
+		 temp[loc-1] = '\000';
 		 decrease_Buffer(USART);
 		 return temp_char ;
 	 }else
@@ -385,12 +392,12 @@ void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bo
 	 }
  }
 
- void UART3_rx_interrupt(USART_TypeDef* USART)
+ void UART1_rx_interrupt(USART_TypeDef* USART)
  {
 	 	 char key= USART->RDR;
-	 	uint8_t *temp = UART3Buffer;
-	 	temp[current_loc_buffer_rx_UART3]=key ;
-	 	current_loc_buffer_rx_UART3++;
+	 	uint8_t *temp = UART1Buffer;
+	 	temp[current_loc_buffer_rx_UART1]=key ;
+	 	current_loc_buffer_rx_UART1++;
  }
  unsigned long get_current_loc_Buffer (USART_TypeDef *USARTx)
 {
@@ -426,6 +433,11 @@ void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bo
 						}
 }
 
+
+void disable_UART(USART_TypeDef* USARTx)
+ {
+	 USARTx->CR1 &= ~ENUE;
+ }
  void init_Buffer(USART_TypeDef* USARTx,unsigned long size)
  {
 	 	 	 	 	 	 	 	 if(USARTx == USART1)
@@ -550,7 +562,13 @@ void error(char* ErrorName)
 {
 	while(1);
 }
-
+void clear_Buffer(uint8_t* Buffer, unsigned long size)
+{
+	for(int i = 0 ; i<size;i++)
+	{
+		Buffer[i]= '\000';
+	}
+}
 
 
 
