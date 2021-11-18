@@ -1,3 +1,4 @@
+"./Src/Bluetooh.o"
 "./Src/Clock.o"
 "./Src/Control.o"
 "./Src/Gpio.o"

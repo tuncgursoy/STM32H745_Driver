@@ -5,6 +5,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Src/Bluetooh.c \
 ../Src/Clock.c \
 ../Src/Control.c \
 ../Src/Gpio.c \
@@ -16,6 +17,7 @@ C_SRCS += \
 ../Src/sysmem.c 
 
 OBJS += \
+./Src/Bluetooh.o \
 ./Src/Clock.o \
 ./Src/Control.o \
 ./Src/Gpio.o \
@@ -27,6 +29,7 @@ OBJS += \
 ./Src/sysmem.o 
 
 C_DEPS += \
+./Src/Bluetooh.d \
 ./Src/Clock.d \
 ./Src/Control.d \
 ./Src/Gpio.d \
