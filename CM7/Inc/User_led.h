@@ -17,6 +17,7 @@ void ld3_on(void);
 void ld1_off(void);
 void ld2_off(void);
 void ld3_off(void);
+void using_as_error_driver_UART(int long_ld1_ld2);
 
 
 

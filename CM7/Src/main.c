@@ -20,16 +20,14 @@ int main(void)
 	enablePORT(GPIOC);
 	Uart_init(GPIOB, USART1, 6, 7, 7, 9600, 1024);
 	init_Bluetooh(USART1);
-
-
+	char* version = get_Version();
+	char* addr = get_BLEAddr();
+	char* name = get_Name() ;
+	set_Name("Master");
+	name = get_Name() ;
 	while(1)
 	{
-		if(!isConnection_established())
-			{
-				return -1 ;
-			}
-			unsigned long baud = get_baudRate_bluetooh();
-			short role = get_Role();
+
 
 		systickDelayMs(10);
 	}

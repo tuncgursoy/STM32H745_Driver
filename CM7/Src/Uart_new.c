@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include "Gpio.h"
 #include "Systick.h"
+#include "User_led.h"
 #include "Clock.h"
 #include <string.h>
 #include <stdlib.h>
@@ -155,6 +156,7 @@ void Uart_init(GPIO_TypeDef* GPIOx,USART_TypeDef *USARTx,short TxPin, short Rxpi
 {
 	 if(!(USARTx->CR1 & ENUE))
 	 	{
+			ld3_init();
 		 	selectedUART_enable(USARTx);
 	 		enablePORT(GPIOx);
 	 		Set_GPIO_MODER(GPIOx, TxPin, 2);//TX
@@ -350,8 +352,10 @@ void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bo
  {
 	 for(int i= 0 ; i<size ; i++)
 	 {
+		 ld3_on();
 	 	while(!(USART->ISR & ISR_TXE));
 	 	USART->TDR = (string[i] & 0xFF );
+	 	ld3_off();
 	 }
  }
 
@@ -394,10 +398,12 @@ void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bo
 
  void UART1_rx_interrupt(USART_TypeDef* USART)
  {
+	 	 ld2_on();
 	 	 char key= USART->RDR;
 	 	uint8_t *temp = UART1Buffer;
 	 	temp[current_loc_buffer_rx_UART1]=key ;
 	 	current_loc_buffer_rx_UART1++;
+	 	ld3_off();
  }
  unsigned long get_current_loc_Buffer (USART_TypeDef *USARTx)
 {
@@ -560,7 +566,8 @@ void disable_UART(USART_TypeDef* USARTx)
 
 void error(char* ErrorName)
 {
-	while(1);
+	using_as_error_driver_UART(1000);
+
 }
 void clear_Buffer(uint8_t* Buffer, unsigned long size)
 {

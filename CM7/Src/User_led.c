@@ -11,6 +11,7 @@
 #include <User_led.h>
 #include "stm32h745xx.h"
 #include <stdbool.h>
+void using_as_error_driver_UART(int long_ld1_ld2);
 
 void ld1_init(void)
 {
@@ -52,6 +53,22 @@ void ld2_off(void)
 void ld3_off(void)
 {
 	Set_GPIO_BSRR(GPIOB, 14, true);
+}
+void using_as_error_driver_UART(int long_ld1_ld2)
+{
+	ld1_init();
+	ld2_init();
+
+	while(1)
+	{
+		ld1_on();
+		ld2_on();
+		systickDelayMs(long_ld1_ld2);
+		ld2_off();
+		ld1_off();
+		systickDelayMs(long_ld1_ld2);
+
+	}
 }
 
 

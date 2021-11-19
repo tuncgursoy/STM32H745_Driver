@@ -48,6 +48,8 @@
 									<listOptionValue builtIn="false" value="../Inc"/>
 									<listOptionValue builtIn="false" value="&quot;E:\stm32WorkSpace\STM32H745\en.stm32cubeh7_v1-9-0_v1.9.0\STM32Cube_FW_H7_V1.9.0\Drivers\CMSIS\Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;E:\stm32WorkSpace\STM32H745\en.stm32cubeh7_v1-9-0_v1.9.0\STM32Cube_FW_H7_V1.9.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\STM32H745\en.stm32cubeh7_v1-9-0_v1.9.0\STM32Cube_FW_H7_V1.9.0\Drivers\CMSIS\Include&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;D:\STM32H745\en.stm32cubeh7_v1-9-0_v1.9.0\STM32Cube_FW_H7_V1.9.0\Drivers\CMSIS\Device\ST\STM32H7xx\Include&quot;"/>
 								</option>
 								<inputType id="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c.1854904483" superClass="com.st.stm32cube.ide.mcu.gnu.managedbuild.tool.c.compiler.input.c"/>
 							</tool>
