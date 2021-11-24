@@ -18,19 +18,30 @@ int main(void)
 
 	SysClockConfig();
 	enablePORT(GPIOC);
-	Uart_init(GPIOB, USART1, 6, 7, 7, 9600, 1024);
-	init_Bluetooh(USART1);
-	char* version = get_Version();
-	char* addr = get_BLEAddr();
-	char* name = get_Name() ;
-	set_Name("Master");
-	name = get_Name() ;
-	while(1)
-	{
+		Uart_init(GPIOB, USART1, 6, 7, 7, 9600, 1024);
+		init_Bluetooh(USART1);
+		char* version = get_Version();
+		char* addr = get_BLEAddr();
+		char* name = get_Name() ;
+		set_Name("Master");
+		name = get_Name() ;
+		set_Pin("123456");
+		short broadcast = get_Broadcast_Interval();
+		char* pin = get_Pin();
+		short authecation = get_Authentication_type();
+		unsigned long Baud_Rate = get_Baud_Rate();
+		set_Baud_Rate(0);
+		unsigned long size;
+		while(1)
+		{
+
+			strcpy(Buffer,uart_get_buffer(USART1, &size));
+			uart_send_string(USART1, Buffer, size);
+			systickDelayMs(50);
+		}
+		return 0 ;
 
 
-		systickDelayMs(10);
-	}
 	return 0 ;
 }
 void USART1_IRQHandler(void)

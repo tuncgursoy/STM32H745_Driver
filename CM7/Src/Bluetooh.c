@@ -1,3 +1,6 @@
+
+
+
 /*
  * Bluetooh.c
  *
@@ -265,9 +268,10 @@ void set_Name(char* name)
 	systickDelayMs(100);
 		char* temp ;
 		unsigned long size = 0 ;
-		char* cmd = "AT+NAME";
-		cmd = strcat(cmd,name);
-		cmd = strcat(cmd,"\r\n");
+		char cmd[100] ;
+		strcpy(cmd,"AT+NAME");
+		strcat(cmd,name);
+		strcat(cmd,"\r\n");
 		short try_count = -1 ;
 		while(size <=2 ||(temp[0]=='E'&&temp[1]=='R') ){
 			size = 0 ;
@@ -280,20 +284,172 @@ void set_Name(char* name)
 				error("Set NAME is failed");
 			}
 		}
-		 char * token = strtok(temp, "\r\n");
-		 token = strtok(token, "=");
-		 token = strtok(NULL," ");
-			if(token == NULL)
-			 {
-				 return get_Name();
-			 }else
-			 {
-				 return token ;
-			 }
 }
 
 
+char* get_Pin(void)
+{
+	systickDelayMs(100);
+	char* temp ;
+	unsigned long size = 0 ;
+	char* cmd = "AT+PIN\r\n";
+	short try_count = -1 ;
+	while(size <=2 ||(temp[0]=='E'&&temp[1]=='R') ){
+		size = 0 ;
+		uart_send_string(Bluetooh_USART, cmd, strlen(cmd));
+		systickDelayMs(100);
+		temp = uart_get_buffer(Bluetooh_USART, &size);
+		try_count++ ;
+		if(try_count ==1000)
+		{
+			error("Get PIN is failed");
+		}
+	}
+	 char * token = strtok(temp, "\r\n");
+	 token = strtok(token, "=");
+	 token = strtok(NULL," ");
+		if(token == NULL)
+		 {
+			 return get_Pin();
+		 }else
+		 {
+			 return token ;
+		 }
+}
+void set_Pin(char* Pin)
+{
+	systickDelayMs(100);
+		char* temp ;
+		unsigned long size = 0 ;
+		char cmd[100] ;
+		strcpy(cmd,"AT+PIN");
+		strcat(cmd,Pin);
+		strcat(cmd,"\r\n");
+		short try_count = -1 ;
+		while(size <=2 ||(temp[0]=='E'&&temp[1]=='R') ){
+			size = 0 ;
+			uart_send_string(Bluetooh_USART, cmd, strlen(cmd));
+			systickDelayMs(100);
+			temp = uart_get_buffer(Bluetooh_USART, &size);
+			try_count++ ;
+			if(try_count ==1000)
+			{
+				error("Set PIN is failed");
+			}
+		}
 
+}
+
+short get_Broadcast_Interval(void)
+{
+	systickDelayMs(100);
+	char* temp ;
+	unsigned long size = 0 ;
+	char* cmd = "AT+ADVI\r\n";
+	short try_count = -1 ;
+	while(size <=2 ||(temp[0]=='E'&&temp[1]=='R') ){
+		size = 0 ;
+		uart_send_string(Bluetooh_USART, cmd, strlen(cmd));
+		systickDelayMs(100);
+		temp = uart_get_buffer(Bluetooh_USART, &size);
+		try_count++ ;
+		if(try_count ==1000)
+		{
+			error("Get Broadcast is failed");
+		}
+	}
+	 char * token = strtok(temp, "\r\n");
+	 token = strtok(token, "=");
+	 token = strtok(NULL," ");
+		if(token == NULL)
+		 {
+			 return get_Broadcast_Interval();
+		 }else
+		 {
+			 switch((char)*token)
+			 		{
+			 		case 48:
+			 			return 0;
+			 		case 49:
+			 			return 1;
+			 		case 50:
+			 			return 2;
+			 		case 51:
+			 			return 3;
+			 		case 52:
+			 			return 4;
+			 		case 53:
+			 			return 5;
+			 		case 54:
+			 			return 6;
+			 		default:
+			 			error("BlueTooh Broadcast Error");
+			 		}
+		 }
+}
+void set_Broadcast_Interval(short parameter)
+{
+	systickDelayMs(100);
+			char* temp ;
+			unsigned long size = 0 ;
+			char cmd[100] ;
+			strcpy(cmd,"AT+ADVI");
+			strcat(cmd,parameter);
+			strcat(cmd,"\r\n");
+			short try_count = -1 ;
+			while(size <=2 ||(temp[0]=='E'&&temp[1]=='R') ){
+				size = 0 ;
+				uart_send_string(Bluetooh_USART, cmd, strlen(cmd));
+				systickDelayMs(100);
+				temp = uart_get_buffer(Bluetooh_USART, &size);
+				try_count++ ;
+				if(try_count ==1000)
+				{
+					error("Set BroadCast is failed");
+				}
+			}
+
+}
+short get_Authentication_type(void)
+{
+	systickDelayMs(100);
+	char* temp ;
+	unsigned long size = 0 ;
+	char* cmd = "AT+TYPE\r\n";
+	short try_count = -1 ;
+	while(size <=2 ||(temp[0]=='E'&&temp[1]=='R') ){
+		size = 0 ;
+		uart_send_string(Bluetooh_USART, cmd, strlen(cmd));
+		systickDelayMs(100);
+		temp = uart_get_buffer(Bluetooh_USART, &size);
+		try_count++ ;
+		if(try_count ==1000)
+		{
+			error("Get Authentication is failed");
+		}
+	}
+	 char * token = strtok(temp, "\r\n");
+	 token = strtok(token, "=");
+	 token = strtok(NULL," ");
+		if(token == NULL)
+		 {
+			 return get_Authentication_type();
+		 }else
+		 {
+			 switch((char)*token)
+			 		{
+			 		case 48:
+			 			return 0;
+			 		case 49:
+			 			return 1;
+			 		case 50:
+			 			return 2;
+			 		default:
+			 			error("BlueTooh BLE Authentication Error");
+			 		}
+		 }
+}
+void set_Authentication_type(short type);
 
 unsigned long get_Baud_Rate(void)
 {
@@ -319,7 +475,7 @@ unsigned long get_Baud_Rate(void)
 		 token = strtok(NULL," ");
 		 if(token == NULL)
 		 {
-			 return get_baudRate_bluetooh();
+			 return get_Baud_Rate();
 		 }
 		 if (!((((char)token[0])>=48)&&(((char)token[0])<=52))){error("Get_Baud Rate not integer");}
 		switch((char)*token)

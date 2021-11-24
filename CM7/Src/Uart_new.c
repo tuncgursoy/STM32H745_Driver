@@ -157,6 +157,7 @@ void Uart_init(GPIO_TypeDef* GPIOx,USART_TypeDef *USARTx,short TxPin, short Rxpi
 	 if(!(USARTx->CR1 & ENUE))
 	 	{
 			ld3_init();
+			ld2_init();
 		 	selectedUART_enable(USARTx);
 	 		enablePORT(GPIOx);
 	 		Set_GPIO_MODER(GPIOx, TxPin, 2);//TX
@@ -352,6 +353,10 @@ void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bo
  {
 	 for(int i= 0 ; i<size ; i++)
 	 {
+		 if((size+1)%20==0)
+		 {
+			 systickDelayMs(10);
+		 }
 		 ld3_on();
 	 	while(!(USART->ISR & ISR_TXE));
 	 	USART->TDR = (string[i] & 0xFF );
@@ -403,7 +408,7 @@ void sampling_mode_and_FIFO (USART_TypeDef *USARTx, bool isitoversamplingby16,bo
 	 	uint8_t *temp = UART1Buffer;
 	 	temp[current_loc_buffer_rx_UART1]=key ;
 	 	current_loc_buffer_rx_UART1++;
-	 	ld3_off();
+	 	ld2_off();
  }
  unsigned long get_current_loc_Buffer (USART_TypeDef *USARTx)
 {
